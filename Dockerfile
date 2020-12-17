@@ -11,7 +11,6 @@ WORKDIR $NEXUS_HOME
 RUN tar zxvf nexus-${NEXUS_VERSION}-bundle.tar.gz  && \
     mv nexus-${NEXUS_VERSION}/* .  && \
       rm -rf nexus-${NEXUS_VERSION}  
-COPY nexus-start.sh .
 VOLUME ["/opt/nexus/sonatype-work"]
 CMD ["sh", "nexus-start.sh"]
 RUN  echo $PWD && ls -l 
