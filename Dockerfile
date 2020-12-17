@@ -12,8 +12,6 @@ RUN tar zxvf nexus-${NEXUS_VERSION}-bundle.tar.gz  && \
     mv nexus-${NEXUS_VERSION}/* .  && \
       rm -rf nexus-${NEXUS_VERSION}  
 VOLUME ["/opt/nexus/sonatype-work"]
-CMD ["sh", "nexus-start.sh"]
-RUN  echo $PWD && ls -l 
 
 ENV CONTEXT_PATH="/nexus"
 ENV MAX_HEAP="768m"
