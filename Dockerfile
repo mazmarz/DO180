@@ -1,4 +1,4 @@
-FROM registry.centos.org/centos
+FROM centos
 ENV NEXUS_VERSION='2.14.19-01'
 ENV NEXUS_HOME=/opt/nexus
 ADD open_ocp4-ha-lab.repo /etc/yum.repos.d/
