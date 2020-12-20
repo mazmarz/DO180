@@ -1,4 +1,4 @@
-FROM ubi7/ubi:7.7
+FROM centos
 MAINTAINER bob
 LABEL maintainer="marco mazzucc"
 LABEL email="mgmazzucco@gmail.com"
