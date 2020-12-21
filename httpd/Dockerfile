@@ -11,4 +11,4 @@ RUN yum install -y httpd && \
     chown -R 48:48 /var/www/html  
 USER apache
 COPY src/ /var/www/html/
-CMD ['httpd','-D','FOREGROUND']
+CMD ['/usr/sbin/httpd','-D','FOREGROUND']
