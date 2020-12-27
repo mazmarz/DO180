@@ -1,0 +1,108 @@
+apiVersion: v1
+items:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: php-helloworld:latest
+    postCommit: {}
+    resources: {}
+    source:
+      contextDir: php-helloworld
+      git:
+        uri: https://github.com/mazmarz/DO180-apps
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: php:7.3
+          namespace: openshift
+      type: Source
+    triggers:
+    - github:
+        secret: yWuWA_3r11kdEw11OU8q
+      type: GitHub
+    - generic:
+        secret: mpuv7bv0CKdJgBzSwHsc
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"php-helloworld:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"php-helloworld\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: php-helloworld
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: php-helloworld
+      spec:
+        containers:
+        - image: ' '
+          name: php-helloworld
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    selector:
+      deployment: php-helloworld
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
