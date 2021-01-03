@@ -1,0 +1,139 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: mysql-template
+objects:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: mysql
+      app.kubernetes.io/component: mysql
+      app.kubernetes.io/instance: mysql
+      app.kubernetes.io/name: new-build-mysql
+    name: mysql
+    namespace: chpt7
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: mysql
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          deployment: mysql
+      spec:
+        containers:
+        - env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                key: root_password
+                name: mysql-env
+          - name: MYSQL_USER
+            valueFrom:
+              configMapKeyRef:
+                key: user
+                name: mysql-env
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                key: database
+                name: mysql-env
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                key: password
+                name: mysql-env
+          image: image-registry.openshift-image-registry.svc:5000/chpt7/mysql
+          imagePullPolicy: IfNotPresent
+          name: mysql
+          volumeMounts:
+          - mountPath: /var/lib/mysql/data
+            name: data
+          - mountPath: /var/lib/mysql/init
+            name: init
+          ports:
+          - containerPort: 3306
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 27
+        terminationGracePeriodSeconds: 30
+        serviceAccountName: mysql-sa
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-claim
+        - name: init
+          persistentVolumeClaim:
+            claimName: init-claim
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: data-claim
+    labels:
+      app: mysql
+  spec:
+    accessModes: 
+    - ReadWriteOnce
+    storageClassName: gp2
+    volumeMode: Filesystem
+    resources:
+      requests: 
+        storage: 1Gi
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: init-claim
+    labels:
+      app: mysql
+  spec:
+    accessModes: 
+    - ReadWriteOnce
+    storageClassName: gp2
+    volumeMode: Filesystem
+    resources:
+      requests: 
+        storage: 1Gi
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2021-01-02T22:34:51Z"
+    labels:
+      app: mysql
+    name: mysql
+    namespace: chpt7
+  spec:
+    clusterIP: 172.30.29.141
+    ports:
+    - name: 3306-tcp
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    selector:
+      deployment: mysql
+    sessionAffinity: None
+    type: ClusterIP
+  
+parameters:
+- name: NAME
+  value: mysql
+  required: true

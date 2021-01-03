@@ -2,7 +2,8 @@
 
 mysql_flags="-u root --socket=/tmp/mysql.sock"
 admin_flags="--defaults-file=$MYSQL_DEFAULTS_FILE $mysql_flags"
-DIRECTORY=/var/lib/mysql/init
+#DIRECTORY=/var/lib/mysql/init
+DIRECTORY=/usr/share/container-scripts/mysql/post-init
 
 if [ -d $DIRECTORY ]; then
         for F in `ls $DIRECTORY`; do
