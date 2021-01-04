@@ -6,7 +6,7 @@ ENV NEXUS_VERSION=2.14.19-01 \
     MIN_HEAP="256m" \
     JAVA_OPTS="-server -Djava.net.preferIPv4Stack=true" \
     LAUNCHER_CONF="./conf/jetty.xml ./conf/jetty-requestlog.xml" \
-    SONATYPE_WORK="${NEXUS_HOME}/sonatype-work"
+    SONATYPE_WORK="/opt/nexus/sonatype-work"
     
 RUN yum install -y --setopt=tsflags=nodocs java-1.8.0-openjdk-devel &&\
     yum clean all -y &&\
