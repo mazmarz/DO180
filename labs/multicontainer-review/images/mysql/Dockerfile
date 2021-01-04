@@ -1,4 +1,4 @@
-FROM rhscl/mysql-57-rhel7
+FROM registry.redhat.io/rhscl/mysql-57-rhel7
 
 MAINTAINER username <username@example.com>
 
