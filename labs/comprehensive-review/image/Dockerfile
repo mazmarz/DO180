@@ -18,15 +18,17 @@ USER nexus
 RUN cd /tmp &&\
     curl -L https://download.sonatype.com/nexus/oss/nexus-2.14.20-02-bundle.tar.gz -O &&\
     tar zxvf nexus*.gz &&\
-    mv /tmp/nexus-2.14.20-02/* /opt/
+    mv /tmp/nexus-2.14.20-02/* /opt/nexus/ &&\
+    mkdir ${SONATYPE_WORK} 
 
+VOLUME ${SONATYPE_WORK}
 WORKDIR ${NEXUS_HOME}
 
-CMD /bin/bash
-#CMD java \
-#  -Dnexus-work=${SONATYPE_WORK} \
-#  -Dnexus-webapp-context-path=${CONTEXT_PATH} \
-#  -Xms${MIN_HEAP} -Xmx${MAX_HEAP} \
-#  -cp 'conf/:lib/*' \
-#  ${JAVA_OPTS} \
-#  org.sonatype.nexus.bootstrap.Launcher ${LAUNCHER_CONF}
+#CMD /bin/bash
+CMD java \
+  -Dnexus-work=${SONATYPE_WORK} \
+  -Dnexus-webapp-context-path=${CONTEXT_PATH} \
+  -Xms${MIN_HEAP} -Xmx${MAX_HEAP} \
+  -cp 'conf/:lib/*' \
+  ${JAVA_OPTS} \
+  org.sonatype.nexus.bootstrap.Launcher ${LAUNCHER_CONF}
