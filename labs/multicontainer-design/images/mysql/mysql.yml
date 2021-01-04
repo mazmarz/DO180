@@ -53,7 +53,8 @@ objects:
               configMapKeyRef:
                 key: password
                 name: mysql-env
-          image: image-registry.openshift-image-registry.svc:5000/chpt7/mysql
+#          image: image-registry.openshift-image-registry.svc:5000/chpt7/mysql@sha256:19886de1a380beefa962dc109bea4995c98a7a9bb14d52a5e7caa05ebcf5899d
+          image: mysql:0-0
           imagePullPolicy: IfNotPresent
           name: mysql
           volumeMounts:
