@@ -6,10 +6,10 @@ RUN yum install -y --setopt=tsflags=nodocs java-1.8.0-openjdk-devel &&\
     yum clean all -y &&\
     mkdir -p ${NEXUS_HOME} &&\
     useradd -u 1001 nexus &&\
-    chown -R nexus:nexus  ${NEXUS_HOME}
+    chown -R nexus:nexus  /opt
 
 USER nexus
 RUN cd /tmp &&\
     curl -L https://download.sonatype.com/nexus/oss/nexus-2.14.20-02-bundle.tar.gz -O &&\
     tar zxvf nexus*.gz &&\
-    mv /tmp/nexus*/nexus /opt/
+    mv /tmp/nexus*/nexus /opt
