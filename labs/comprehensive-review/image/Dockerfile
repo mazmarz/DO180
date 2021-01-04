@@ -18,7 +18,7 @@ USER nexus
 RUN cd /tmp &&\
     curl -L https://download.sonatype.com/nexus/oss/nexus-2.14.20-02-bundle.tar.gz -O &&\
     tar zxvf nexus*.gz &&\
-    mv /tmp/nexus*/nexus /opt
+    mv /tmp/nexus*2/* /opt
 
 WORKDIR ${NEXUS_HOME}
 
