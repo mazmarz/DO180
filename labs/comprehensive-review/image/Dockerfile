@@ -1,6 +1,6 @@
 FROM registry.redhat.io/ubi7/ubi:7.7
-LABEL Maintainer: Marco Mazzucco
-      email: marco.mazzuco@pl.ibm.com
+LABEL Maintainer: Marco Mazzucco \
+      email: marco.mazzuco@pl.ibm.com \
       Contents: a test file
 
 ENV NEXUS_VERSION=2.14.19-01 \
