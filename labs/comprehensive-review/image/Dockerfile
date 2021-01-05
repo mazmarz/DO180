@@ -21,6 +21,7 @@ RUN cd /tmp &&\
     mv /tmp/nexus-2.14.20-02/* /opt/nexus/ &&\
     mkdir ${SONATYPE_WORK} 
 
+EXPOSE 8081/tcp
 VOLUME ${SONATYPE_WORK}
 WORKDIR ${NEXUS_HOME}
 
