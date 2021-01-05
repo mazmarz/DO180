@@ -15,3 +15,4 @@ MAINTAINER username <username@example.com>
 #  * $MYSQL_ROOT_PASSWORD (Optional) - Password for the 'root' MySQL account
 
 ADD root /
+VOLUME /var/lib/mysql/data
