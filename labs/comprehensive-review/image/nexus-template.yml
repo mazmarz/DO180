@@ -1,0 +1,87 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata: 
+  name: nexus-template
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: nexus-vol
+    labels:
+      app: nexus
+  spec:
+    resources:
+      requests:
+        storage: 1Gi
+    accessModes: 
+    - ReadWriteOnce
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"nexus:latest","namespace":"nexus"},"fieldPath":"spec.template.spec.containers[?(@.name==\"nexus\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: nexus
+      app.kubernetes.io/component: nexus
+      app.kubernetes.io/instance: nexus
+    name: nexus
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: nexus
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: nexus
+      spec:
+        containers:
+        - image: ' '
+          name: nexus
+          env:
+          - name: MAX_HEAP
+            value: ${MAX_HEAP}
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+          - mountPath: /opt/nexus/sonatype-work
+            name: nexus-volume-1
+        volumes:
+        - persistentVolumeClaim:
+            claimName: nexus-vol
+          name: nexus-volume-1
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: nexus
+      app.kubernetes.io/component: nexus
+      app.kubernetes.io/instance: nexus
+    name: nexus
+  spec:
+    ports:
+    - name: 8081-tcp
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+    selector:
+      deployment: nexus
+  status:
+    loadBalancer: {}
+parameters:
+- name: MAX_HEAP
+  required: true
+  value: 769m
+
